@@ -2,12 +2,17 @@ from flask import request
 
 from server import app, db_crud
 
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session,sessionmaker
 
-from server.database_settings import SessionLocal
+from server.database_settings import SessionLocal, engine
+
+import models
+
+session = sessionmaker(bind=engine)
 
 def get_db():
     db = SessionLocal()
+    print(db)
     try:
         yield db
     finally:
@@ -15,19 +20,22 @@ def get_db():
 
 
 @app.route('/')
-def hello_world():  # put application's code here
-    return 'Hello World!'
+def hello_world(b="dfgdgf"):  # put application's code here
+    return b
 
 
 @app.route('/get_posts', methods=['GET'])
-def get_posts(db: Session = get_db):  # put application's code here
+def get_posts(db: Session = get_db):
     try:
-        query = request.args["query"]
+        query = request.args.get("query")
+        print(db)
+        print(query)
         results_posts_list = db_crud.get_posts(db=db, text=query)
+        # print(results_posts_list)
         return {"result": results_posts_list}
     except Exception as exc:
         return str(exc)
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', debug=True, port=5000)
