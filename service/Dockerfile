@@ -22,7 +22,13 @@ EXPOSE 5000
 
 #ENTRYPOINT [ "app.py" ]
 
-CMD [ "flask", "run", "--host=0.0.0.0" ]
+
+ENV FLASK_APP /usr/src/app/server/app.py
+
+
+CMD flask run
+
+#CMD [ "flask", "run", "--host=0.0.0.0" ]
 #ENTRYPOINT["python3"]
 #CMD python3 app.py
 
