@@ -3,12 +3,13 @@ version: "3.9"
 services:
   db:
     image: postgres
-#    volumes:
-#      - ./data/db:/var/lib/postgresql/data
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${BACKEND_DB_USER}
-      - POSTGRES_PASSWORD=${BACKEND_DB_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${BACKEND_DB_USER}
+      POSTGRES_PASSWORD: ${BACKEND_DB_PASSWORD}
+#      POSTGRES_HOST_AUTH_METHOD=trust
     ports:
       - "5432:5432"
 
@@ -20,12 +21,13 @@ services:
     volumes:
       - .:/usr/src/app/
     ports:
-      - "5000:5000"
+      - "8000:8000"
     environment:
-      - SERVER_ELASTIC_CONNECTION=${SERVER_ELASTIC_CONNECTION}
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${BACKEND_DB_USER}
-      - POSTGRES_PASSWORD=${BACKEND_DB_PASSWORD}
+      SERVER_ELASTIC_CONNECTION: ${SERVER_ELASTIC_CONNECTION}
+#      - POSTGRES_DB=${POSTGRES_DB}
+      POSTGRES_USER: ${BACKEND_DB_USER}
+      POSTGRES_PASSWORD: ${BACKEND_DB_PASSWORD}
+      SQLALCHEMY_DATABASE_URI: postgresql://db:postgres@localhost:5432/posts
 
     depends_on:
       - db
@@ -48,8 +50,8 @@ services:
       - data01:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
-    networks:
-      - mynetwork
+#    networks:
+#      - mynetwork
 
   es02:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.13.1
@@ -67,8 +69,8 @@ services:
         hard: -1
     volumes:
       - data02:/usr/share/elasticsearch/data
-    networks:
-      - mynetwork
+#    networks:
+#      - mynetwork
 
   es03:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.13.1
@@ -86,8 +88,8 @@ services:
         hard: -1
     volumes:
       - data03:/usr/share/elasticsearch/data
-    networks:
-      - mynetwork
+#    networks:
+#      - mynetwork
 
 volumes:
   data01:
@@ -97,6 +99,6 @@ volumes:
   data03:
     driver: local
 
-networks:
-  mynetwork:
-    driver: bridge
+#networks:
+#  mynetwork:
+#    driver: bridge

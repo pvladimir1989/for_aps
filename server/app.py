@@ -6,9 +6,9 @@ from sqlalchemy.orm import Session,sessionmaker
 
 from server.database_settings import SessionLocal, engine
 
-import models
+# import models
 
-session = sessionmaker(bind=engine)
+# session = sessionmaker(bind=engine)
 
 def get_db():
     db = SessionLocal()
@@ -25,7 +25,10 @@ def hello_world(b="dfgdgf"):  # put application's code here
 
 
 @app.route('/get_posts', methods=['GET'])
-def get_posts(db: Session = get_db):
+def get_posts():
+    db: Session = SessionLocal()
+
+    print(db,"sdgfdsfgdsfgdsfg")
     try:
         query = request.args.get("query")
         print(db)
@@ -34,8 +37,9 @@ def get_posts(db: Session = get_db):
         # print(results_posts_list)
         return {"result": results_posts_list}
     except Exception as exc:
+        print("dsfgdfsgdsfgdfgsdfg", exc)
         return str(exc)
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True, port=5000)
+    app.run(host='0.0.0.0', debug=True, port=8000)
