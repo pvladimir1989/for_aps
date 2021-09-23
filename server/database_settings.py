@@ -1,7 +1,4 @@
-import os
-
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 from dotenv import load_dotenv
@@ -11,5 +8,3 @@ SERVER_POSTGRES_CONNECTION = "postgresql://db:postgres@localhost:5432/posts"
 
 engine = create_engine(SERVER_POSTGRES_CONNECTION, pool_pre_ping=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-print(SessionLocal,'sadfasgagdfgdgf')
