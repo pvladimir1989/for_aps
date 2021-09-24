@@ -11,3 +11,10 @@ class Post(db.Model):
 
     def __repr__(self):
         return '<Post {}>'.format(self.rubrics)
+
+    def get_data(self):
+        return {
+            'id': self.id,
+            'rubrics': self.rubrics,
+            'text': self.text,
+        }

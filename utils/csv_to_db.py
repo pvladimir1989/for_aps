@@ -1,15 +1,17 @@
-"""
-в postgres и elasticsearch из csv
-"""
-
 import csv
 import json
+import os
 
 import pandas as pd
 import psycopg2
 from elasticsearch import Elasticsearch
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 INDEX = "posts"
+SERVER_POSTGRES_CONNECTION = os.getenv("SERVER_POSTGRES_CONNECTION", None)
 
 
 def df2elastic_converter(df):
@@ -22,10 +24,9 @@ def elastic_insert_logic(file_name: str):
     """ в Elastic"""
     df = pd.read_csv(file_name, usecols=[0])
     df["id"] = df.index + 1
-    print(df)
 
     # Добавляем все в новый индекс INDEX
-    e = Elasticsearch("http://127.0.0.1:9200")
+    e = Elasticsearch("http://es01:9200")
     if e.indices.exists(INDEX):
         e.indices.delete(index=INDEX)
     e.indices.create(index=INDEX)
@@ -39,7 +40,7 @@ def elastic_insert_logic(file_name: str):
 
 def postgres_insert_logic(file_name: str):
     """Добавление данных в Postgres"""
-    conn = psycopg2.connect("postgresql://local:local@localhost/local")
+    conn = psycopg2.connect(SERVER_POSTGRES_CONNECTION)
     cur = conn.cursor()
 
     cur.execute("DROP TABLE IF EXISTS posts;")

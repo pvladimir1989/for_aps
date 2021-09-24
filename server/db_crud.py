@@ -1,23 +1,16 @@
 from sqlalchemy.orm import Session
-
 from server import models
-
 from server.elastic import Elastic
-
 elastic = Elastic()
 
 
-def delete_post_by_id(db: Session, id_delete: int):
+def delete_post_by_id(id_delete: int):
     deleted_post = elastic.search_by_id(id_delete)
 
     if deleted_post is not None:
         elastic_deleted = elastic.delete_by_id(deleted_post[0]['_id'])
 
-        db_deleted = bool(db.query(models.Post).filter(models.Post.id == id).delete())
-
-        db.commit()
-
-        return all((elastic_deleted, db_deleted))
+        return elastic_deleted
     return False
 
 
