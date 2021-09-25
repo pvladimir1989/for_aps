@@ -1,6 +1,11 @@
+import asyncio
+
 from sqlalchemy.orm import Session
 from server import models
 from server.elastic import Elastic
+
+from asgiref.wsgi import WsgiToAsgi
+
 elastic = Elastic()
 
 
@@ -17,7 +22,7 @@ def delete_post_by_id(id_delete: int):
 def get_posts(db: Session, text: str):
     id_list = [item["id"] for item in elastic.search_by_text(text)]
 
-    result = db.query(models.Post) \
+    result =db.query(models.Post) \
         .filter(models.Post.id.in_(id_list)) \
         .order_by(models.Post.created_date.desc()) \
         .all()

@@ -1,8 +1,9 @@
+import asyncio
 import os
 from typing import Union, List
 
 import elasticsearch
-from elasticsearch import Elasticsearch
+from elasticsearch import Elasticsearch, AsyncElasticsearch
 
 
 class Elastic:
@@ -11,8 +12,11 @@ class Elastic:
         self.__connection = Elasticsearch(connection_str)
         self.__index = index
 
-    def search_by_id(self, id: int) -> Union[list, None]:
+    async def search_by_id(self, id: int) -> Union[list, None]:
         """Поиск по id в массиве документов (hits)"""
+
+        # loop = asyncio.get_event_loop()
+        # loop.run_until_complete(get_posts())
         result = self.__connection.search(index=self.__index, body={
             "size": 1,
             "query": {
