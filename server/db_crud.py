@@ -1,3 +1,5 @@
+import asyncio
+
 from sqlalchemy.orm import Session
 from server import models
 from server.elastic import Elastic
@@ -22,3 +24,8 @@ def get_posts(db: Session, text: str):
         .order_by(models.Post.created_date.desc()) \
         .all()
     return result
+
+# loop = asyncio.new_event_loop()
+# asyncio.set_event_loop(loop)
+#
+# loop.run_until_complete(get_posts(Session,'text'))

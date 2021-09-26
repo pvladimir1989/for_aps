@@ -1,11 +1,13 @@
+import asyncio
 import os
 from typing import Union, List
 
 import elasticsearch
-from elasticsearch import Elasticsearch
+from elasticsearch import Elasticsearch, AsyncElasticsearch
 
 
 class Elastic:
+
     def __init__(self, index: str = 'posts'):
         connection_str = os.getenv("SERVER_ELASTIC_CONNECTION", None)
         self.__connection = Elasticsearch(connection_str)
@@ -13,6 +15,7 @@ class Elastic:
 
     def search_by_id(self, id: int) -> Union[list, None]:
         """Поиск по id в массиве документов (hits)"""
+
         result = self.__connection.search(index=self.__index, body={
             "size": 1,
             "query": {
@@ -50,3 +53,5 @@ class Elastic:
         })
         result_ids = [{"id_": item["_id"], "id": item["_source"]["id"]} for item in result["hits"]["hits"]]
         return result_ids
+
+    # loop.run_until_complete(search_by_text())

@@ -1,16 +1,20 @@
-from flask import request
+# from flask import request
+
+from quart import Quart, g, request
+from quart.helpers import make_response
+
 from server import app, db_crud
 from sqlalchemy.orm import Session
 from server.database_settings import SessionLocal
 
 
 @app.route('/get_posts', methods=['GET'])
-def get_posts():
+async def get_posts():
     db: Session = SessionLocal()
 
     try:
         query = request.args.get('query', default='')
-        results_posts_list = db_crud.get_posts(db=db, text=query)
+        results_posts_list = await db_crud.get_posts(db=db, text=query)
         return {'result': [x.get_data() for x in results_posts_list]}
     except Exception as exc:
         return str(exc)
