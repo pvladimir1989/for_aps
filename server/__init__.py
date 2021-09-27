@@ -1,4 +1,4 @@
-from flask import Flask,request
+from flask import Flask, request
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -10,5 +10,5 @@ db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
 
-from server import app, models
-
+# from .app import *
+# from .models import *
