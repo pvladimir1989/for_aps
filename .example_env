@@ -1,0 +1,7 @@
+SQLALCHEMY_DATABASE_URI=postgresql://db:postgres@localhost:5432/posts
+POSTGRES_DB=local
+PG_PORT=5432
+BACKEND_DB_USER=local
+BACKEND_DB_PASSWORD=local
+SERVER_POSTGRES_CONNECTION=postgresql://local:local@db:5432/local
+SERVER_ELASTIC_CONNECTION=http://es02:9200
