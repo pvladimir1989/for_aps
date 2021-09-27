@@ -1,0 +1,87 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Тестовое",
+    "description": "Тестовое задание",
+    "version": "1.0"
+  },
+  "paths": {
+    "/get_posts": {
+      "get": {
+        "summary": "Поиск постов",
+        "description": "Поиск постов",
+        "operationId": "search_for_posts",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Text",
+              "type": "string"
+            },
+            "name": "text",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete_post": {
+      "delete": {
+        "summary": "Удалить пост",
+        "description": "удаление по индексу",
+        "operationId": "delete_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
