@@ -2,10 +2,12 @@ from flask import request
 from server import app, db_crud
 from sqlalchemy.orm import Session
 from server.database_settings import SessionLocal
+from flasgger.utils import swag_from
 
 
 @app.route('/get_posts', methods=['GET'])
-def get_posts():
+@swag_from('./get_posts.yml')
+def get_posts(self):
     db: Session = SessionLocal()
 
     try:
